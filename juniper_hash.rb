@@ -92,6 +92,7 @@ class JuniperHash
     block_name = nil
 
     lines_array.each do |line|
+      next if line.strip.empty?
       # fill array with lines to store a new block
       output[block_name] << line if target_found
 
@@ -132,7 +133,10 @@ class JuniperHash
     out = {}
     unless lines_array.class == Array
       return lines_array
+    else # array
+      return lines_array unless  lines_array.join('').include?('{') || lines_array.join('').include?('}')
     end
+
     if lines_array.join('').include? '{'
       blocks = extract_blocks_from_block(lines_array)
       blocks.each do |bkey, l_array|
